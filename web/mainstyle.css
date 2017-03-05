@@ -1,0 +1,156 @@
+/* Copyright (C) 2013-2017  Stephan Kreutzer
+ *
+ * This file is part of VoterFlow.
+ *
+ * VoterFlow is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License version 3 or any later version,
+ * as published by the Free Software Foundation.
+ *
+ * VoterFlow is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU Affero General Public License 3 for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License 3
+ * along with VoterFlow. If not, see <http://www.gnu.org/licenses/>.
+ */
+/**
+ * @file $/web/mainstyle.css
+ * @brief Global style settings.
+ * @author Stephan Kreutzer
+ * @since 2013-09-14
+ */
+
+
+
+body
+{
+    font-family: sans-serif;
+    background-color: #D7FFFF;
+    margin: 0px;
+    padding: 0px;
+}
+
+.mainbox
+{
+    /* Centering. */
+    margin-left: auto;
+    margin-right: auto;
+    /*width: 75%;*/
+
+    border-style: solid;
+    border-width: 0px;
+    background-color: #FFFFFF;
+
+    padding: 5px;
+}
+
+.mainbox_header
+{
+    background-color: #D7FFFF;
+    border-style: solid;
+    border-width: 1px;
+    border-color: #D7FFFF;
+}
+
+.mainbox_header_h1
+{
+    color: #000000;
+    text-align: center;
+}
+
+.mainbox_body
+{
+    background-color: #FFFFFF;
+    text-align: justify;
+}
+
+.footerbox
+{
+    /* Centering. */
+    margin-left: auto;
+    margin-right: auto;
+    /*width: 75%;*/
+
+    padding: 5px;
+
+    text-align: center;
+    color: #FFFFFF;
+}
+
+.footerbox_link
+{
+    color: #000000;
+}
+
+.license
+{
+    font-family: monospace;
+    text-align: left;
+    margin-top: 50px;
+    margin-bottom: 50px;
+}
+
+.languageselector
+{
+    /* Centering. */
+    width: 70%;
+    margin:0 auto; 
+}
+
+.languageselector_text
+{
+    color: #000000;
+}
+
+fieldset
+{
+    border: 0px;
+}
+
+.success
+{
+    color: green;
+}
+
+.error
+{
+    color: red;
+}
+
+.table
+{
+    display: table;
+}
+
+.tr
+{
+    display: table-row;
+}
+
+.thead
+{
+    display: table-header-group;
+}
+
+.tbody
+{
+     display: table-row-group;
+}
+
+.tfoot
+{
+    display: table-footer-group;
+}
+
+.th
+{
+    display: table-cell;
+    font-weight: bold;
+}
+
+.td
+{
+    display: table-cell;
+}
+
