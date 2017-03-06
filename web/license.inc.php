@@ -29,7 +29,7 @@
 function getHTMLLicenseNotification($cssClassLicensenotification = "licensenotification")
 {
     return "<p class=\"".$cssClassLicensenotification."\">\n".
-           "  VoterFlow (C) 2007-2017  Stephan Kreutzer, Christian Huke<br/>\n".
+           "  VoterFlow (C) 2010-2017  Stephan Kreutzer, Christian Huke<br/>\n".
            "  <br/>\n".
            "  VoterFlow is free software: you can redistribute it and/or modify\n".
            "  it under the terms of the GNU Affero General Public License version 3 or any later version,\n".
@@ -43,7 +43,7 @@ function getHTMLLicenseNotification($cssClassLicensenotification = "licensenotif
            "  You should have received a copy of the GNU Affero General Public License 3\n".
            "  along with note system for refugee-it.de. If not, see &lt;<a href=\"http://www.gnu.org/licenses/\">http://www.gnu.org/licenses/</a>&gt;.<br/>\n".
            "  <br/>\n".
-           "  Contributions under other licenses by Free Software Foundation.<br/>\n".
+           "  Contributions under other licenses by William Durand, Google + contributors and the Free Software Foundation.<br/>\n".
            "  <br/>\n".
            "  The complete source code is available at &lt;<a href=\"https://github.com/voterflow/voterflow/\">https://github.com/voterflow/voterflow/</a>&gt;.<br/>\n".
            "</p>\n";

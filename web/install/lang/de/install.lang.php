@@ -28,21 +28,21 @@ define("LANG_PAGETITLE", "Installation");
 // -- Step 0 -------------------------------------------------------------------
 
 define("LANG_STEP0_HEADER", "Installation");
-define("LANG_STEP0_INTROTEXT", "Sie sind dabei, die VoterFlow-Software zur Erstellung und Teilnahme an Umfragen/Abstimmungen zu installieren.
-Infolge der Veröffentlichung der Software unter der GNU Affero General Public License 3 samt jeder späteren Version dieser Lizenz handelt es sich bei VoterFlow um <a href=\"http://de.wikipedia.org/wiki/Freie_Software\">freie Software</a> gemäß der <a href=\"http://www.gnu.org/philosophy/free-sw.de.html\">Definition</a> der <a href=\"http://www.fsf.org/\">Free Software Foundation</a> (übersetzt: „Freie-Software-Stiftung“, siehe auch die europäische <a href=\"http://www.fsfe.org\">Free Software Foundation Europe</a>). Im nächsten Schritt des Installationsvorgangs wird der vollständige Lizenztext angezeigt, welchem Sie zustimmen, sobald Sie die Software verwenden. Ein kurzer Überblick über die eingeräumten Nutzungsrechte: ".
+define("LANG_STEP0_INTROTEXT", "<p>Sie sind dabei, die VoterFlow-Software zur Erstellung und Teilnahme an Umfragen/Abstimmungen zu installieren.
+Infolge der Veröffentlichung der Software unter der GNU Affero General Public License 3 samt jeder späteren Version dieser Lizenz handelt es sich bei VoterFlow um <a href=\"http://de.wikipedia.org/wiki/Freie_Software\">freie Software</a> gemäß der <a href=\"http://www.gnu.org/philosophy/free-sw.de.html\">Definition</a> der <a href=\"http://www.fsf.org/\">Free Software Foundation</a> (übersetzt: „Freie-Software-Stiftung“, siehe auch die europäische <a href=\"http://www.fsfe.org\">Free Software Foundation Europe</a>). Im nächsten Schritt des Installationsvorgangs wird der vollständige Lizenztext angezeigt, welchem Sie zustimmen, sobald Sie die Software verwenden. Ein kurzer Überblick über die eingeräumten Nutzungsrechte:</p>".
                                "<ul>".
                                "  <li>Es ist Ihnen gestattet, die Software zu jedem beliebigen Zweck auszuführen. Wenn die Software so ausgeführt wird, dass Teilnehmer eines Netzwerkes ihre Nutzung veranlassen können (z.B. in Form eines Dienstes), sind Sie verpflichtet, eine Möglichkeit zu schaffen, über welche Teilnehmer dieses Netzwerkes die Software, welche Sie ausführen, erhalten können (Sie müssen dabei die Bedingungen für die Weitergabe erfüllen).</li>".
                                "  <li>Es ist Ihnen gestattet, die Software weiterzugeben, wenn Sie die Software unter GNU AGPL 3 oder einer späteren Version dieser Lizenz weitergeben.</li>".
                                "  <li>Es ist Ihnen gestattet, die Software zu verändern. Sie sind verpflichtet, Ihre Veränderungen unter die GNU AGPL 3 oder einer späteren Version dieser Lizenz zu lizenzieren. Es ist Ihnen gestattet, die veränderte Software auszuführen und weiterzugeben (Sie müssen dabei die Bedingungen für das Ausführen und die Weitergabe erfüllen).</li>".
                                "</ul>".
-                               "Jedoch: ".
+                               "<p>Jedoch:</p>".
                                "<ul>".
                                "  <li>Werte in der Datenbank müssen nicht mit dem Quellcode weitergegeben werden, solange sie durch Benutzer-Interaktion generiert wurden und nicht für die interne Funktionsweise der Software verantwortlich sind.</li>".
                                "  <li>Es dürfen eigene Werke von der Software verlinken lassen, ohne diese Werke unter die GNU AGPL 3 oder einer späteren Version dieser Lizenz veröffentlichen zu müssen, solange diese Werke nicht in die Software integriert sind oder für die Ausführung einer Funktion der Software benötigt werden.</li>".
                                "  <li>Wenn Sie Werte und Einstellungen in der Software ändern, die ausschließlich für die visuelle Darstellung verwendet werden (also nicht Teil eines Algorithmusses sind, und wenn Sie die Art und Weise, wie die Software auf diese Werte zugreift, nicht verändern), dann haben Sie lediglich die Konfiguration angepasst und keine eigentliche Veränderung vorgenommen. In diesem speziellen Fall sind Sie nicht dazu verpflichtet, die Anpassungen unter der GNU AGPL 3 oder einer späteren Version der Lizenz zu veröffentlichen, was es Ihnen gestattet, eigene individuelle Erscheinungsformen der Software zu gestalten.</li>".
                                "  <li>Freie Software erlaubt beides, kommerzielle Nutzung und unentgeltliche Nutzung. Bei freier Software geht es in erster Linie um Freiheit und digitale Grundrechte, nicht um den Preis (Freiheit im Sinne von „Redefreiheit“ und nicht im Sinne von „Freibier“ – unentgeltliche Nutzung ist ein möglicher Seiteneffekt).</li>".
                                "</ul>".
-                               "Weitere Anmerkungen und Ratschläge: ".
+                               "<p>Weitere Anmerkungen und Ratschläge:</p>".
                                "<ul>".
                                "  <li>Wenn Sie die Software verändern, sind Sie dazu verpflichtet, Ihre Anpassungen deutlich zu kennzeichnen.</li>".
                                "  <li>Wenn Sie die Software verändern, wäre es nett von Ihnen, das <a href=\"https://github.com/voterflow/voterflow\">primäre Repository</a> des Projekts und die Autoren der Software (siehe die AUTHORS-Datei) über Ihre Aktivitäten zu informieren. Sie sind allerdings nicht dazu verpflichtet.</li>".
@@ -50,7 +50,7 @@ Infolge der Veröffentlichung der Software unter der GNU Affero General Public L
                                "  <li>Wenn Sie einen Lizenzverstoß entdecken (oder einen Fall, bei dem es sich um einen Lizenzverstoß handeln könnte), kontaktieren Sie bitte die Autoren der Software. Freiheit kann nur geschützt werden, wenn sie aktiv gegen ihre Gegner verteidigt wird. Keine Sorge, wir haben nicht vor, der Person, welche den Lizenzverstoß begangen hat, Schwierigkeiten zu bereiten, viel lieber würden wir eine Einhaltung der Lizenzbestimmungen bevorzugen.</li>".
                                "  <li>Falls Sie auf einen Fehler in der Software stoßen oder zusätzliche Features wünschen, können Sie <a href=\"https://github.com/voterflow/voterflow/issues\">hier</a> eine Issue dafür anlegen oder die Autoren kontaktieren, wenn Sie die Änderungen selbst entweder nicht durchführen wollen oder können. Wenn Sie die Änderungen selbst vornehmen, wäre es nett von Ihnen, uns eine Benachrichtigung über die vorgenommenen Änderungen zukommen zu lassen.</li>".
                                "</ul>".
-                               "Features der Software: ".
+                               "<p>Features der Software:</p>".
                                "<ul>".
                                "  <li>Anlegen einer Umfrage/Abstimmung</li>".
                                "  <li>Teilnehmen an einer Umfrage/Abstimmung</li>".

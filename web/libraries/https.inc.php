@@ -23,17 +23,17 @@
 
 
 
-$https = false;
+define("HTTPS_ENABLED", false);
 
 if (isset($_SERVER['HTTPS']) === true)
 {
     if ($_SERVER['HTTPS'] === "on")
     {
-        $https = true;
+        define("HTTPS_ENABLED", true);
     }
 }
 
-if ($https !== true)
+if (HTTPS_ENABLED !== true)
 {
     header("Location: https://".$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'], true, 302);
     exit(-1);

@@ -34,17 +34,6 @@ if (empty($_SESSION) === true)
 if (isset($_POST['logout']) === true &&
     isset($_SESSION['member_id']) === true)
 {
-    require_once("./libraries/logging.inc.php");
-
-    if (isset($_SESSION['member_name']) === true)
-    {
-        logEvent("Member '".$_SESSION['member_name']."' logged out.");
-    }
-    else
-    {
-        logEvent("Member ".((int)$_SESSION['member_id'])." logged out.");
-    }
-
     $language = null;
 
     if (isset($_SESSION['language']) === true)
@@ -75,9 +64,9 @@ require_once("./language_selector.inc.php");
 
 echo "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n".
      "<!DOCTYPE html\n".
-     "    PUBLIC \"-//W3C//DTD XHTML 1.0 Strict//EN\"\n".
-     "    \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd\">\n".
-     "<html xmlns=\"http://www.w3.org/1999/xhtml\" xml:lang=\"".getCurrentLanguage()."\" lang=\"".getCurrentLanguage()."\">\n".
+     "    PUBLIC \"-//W3C//DTD XHTML 1.1//EN\"\n".
+     "    \"http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd\">\n".
+     "<html version=\"-//W3C//DTD XHTML 1.1//EN\" xmlns=\"http://www.w3.org/1999/xhtml\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xsi:schemaLocation=\"http://www.w3.org/1999/xhtml http://www.w3.org/MarkUp/SCHEMA/xhtml11.xsd\" xml:lang=\"".getCurrentLanguage()."\" lang=\"".getCurrentLanguage()."\">\n".
      "    <head>\n".
      "        <meta http-equiv=\"content-type\" content=\"application/xhtml+xml; charset=UTF-8\"/>\n".
      "        <title>".LANG_PAGETITLE."</title>\n".

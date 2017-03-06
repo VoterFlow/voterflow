@@ -33,9 +33,9 @@ require_once(getLanguageFile("install"));
 
 echo "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n".
      "<!DOCTYPE html\n".
-     "    PUBLIC \"-//W3C//DTD XHTML 1.0 Strict//EN\"\n".
-     "    \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd\">\n".
-     "<html xmlns=\"http://www.w3.org/1999/xhtml\" xml:lang=\"".getCurrentLanguage()."\" lang=\"".getCurrentLanguage()."\">\n".
+     "    PUBLIC \"-//W3C//DTD XHTML 1.1//EN\"\n".
+     "    \"http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd\">\n".
+     "<html version=\"-//W3C//DTD XHTML 1.1//EN\" xmlns=\"http://www.w3.org/1999/xhtml\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xsi:schemaLocation=\"http://w3.org/MarkUp/SCHEMA/xhtml11.xsd\" xml:lang=\"".getCurrentLanguage()."\" lang=\"".getCurrentLanguage()."\">\n".
      "  <head>\n".
      "    <title>".LANG_PAGETITLE."</title>\n".
      "    <link rel=\"stylesheet\" type=\"text/css\" href=\"../mainstyle.css\"/>\n".
@@ -100,9 +100,9 @@ if ($step == 0)
          "        <h1 class=\"mainbox_header_h1\">".LANG_STEP0_HEADER."</h1>\n".
          "      </div>\n".
          "      <div class=\"mainbox_body\">\n".
-         "        <p>\n".
+         "        <div>\n".
          "          ".LANG_STEP0_INTROTEXT."\n".
-         "        </p>\n".
+         "        </div>\n".
          "        <div>\n".
          "          <form action=\"install.php\" method=\"post\">\n".
          "            <fieldset>\n".
