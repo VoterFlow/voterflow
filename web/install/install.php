@@ -217,7 +217,7 @@ else if ($step == 2)
                     "\n".
                     "try\n".
                     "{\n".
-                    "    \$pdo = @new PDO('mysql:host=".$host.";dbname=".$database.";charset=utf8', \"".$username."\", \"".$password."\");\n".
+                    "    \$pdo = @new PDO('mysql:host=".$host.";dbname=".$database.";charset=utf8', \"".$username."\", \"".$password."\", array(PDO::MYSQL_ATTR_INIT_COMMAND => \"SET NAMES utf8\"));\n".
                     "}\n".
                     "catch (PDOException \$ex)\n".
                     "{\n".
