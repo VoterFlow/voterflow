@@ -23,14 +23,20 @@
 
 
 
-define("HTTPS_ENABLED", false);
-
 if (isset($_SERVER['HTTPS']) === true)
 {
     if ($_SERVER['HTTPS'] === "on")
     {
         define("HTTPS_ENABLED", true);
     }
+    else
+    {
+        define("HTTPS_ENABLED", false);
+    }
+}
+else
+{
+    define("HTTPS_ENABLED", false);
 }
 
 if (HTTPS_ENABLED !== true)
