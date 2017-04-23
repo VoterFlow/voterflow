@@ -233,6 +233,21 @@ else
 
     if (is_array($member) === true)
     {
+        $language = null;
+
+        if (isset($_SESSION['language']) === true)
+        {
+            $language = $_SESSION['language'];
+        }
+
+        $_SESSION = array();
+
+        if ($language != null)
+        {
+            $_SESSION['language'] = $language;
+        }
+
+        $_SESSION['instance_path'] = dirname(__FILE__);
         $_SESSION['member_id'] = $member['id'];
         $_SESSION['member_name'] = $_POST['name'];
         $_SESSION['member_role'] = $member['role'];
