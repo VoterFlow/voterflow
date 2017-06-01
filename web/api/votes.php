@@ -176,11 +176,11 @@ if ($_SERVER['REQUEST_METHOD'] === "GET")
                  "          { \"name\": \"name\", \"value\": ".json_encode($vote['name'])." },\n".
                  "          { \"name\": \"description\", \"value\": ".json_encode($vote['description'])." },\n".
                  "          { \"name\": \"datetime_created\", \"value\": ".json_encode($vote['datetime_created'])." }\n".
-                 "        ]\n";
+                 "        ]\n".
+                 "      }\n";
         }
 
-        echo "      }\n".
-             "    ],\n".
+        echo "    ],\n".
              "    \"template\":\n".
              "    {\n".
              "      \"data\":\n".
