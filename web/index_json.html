@@ -32,7 +32,7 @@
               var baseURL = $location.absUrl();
               baseURL = baseURL.substring(0, baseURL.lastIndexOf('/'));
 
-              $http.defaults.headers.common.Accept = 'application/vnd.collection+json';
+              $http.defaults.headers.common.Accept = 'application/vnd.collection+json,application/json';
 
               $http({ method: 'GET', url: baseURL + '/api/votes.php' })
                 .then(function successCallback(response) {

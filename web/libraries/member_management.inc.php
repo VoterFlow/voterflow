@@ -37,6 +37,7 @@ function InsertNewMember($name, $password, $email, $role)
         return -1;
     }
 
+    /** @todo Why is this needed? Only one statement in transaction? */
     if (Database::Get()->BeginTransaction() !== true)
     {
         return -2;

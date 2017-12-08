@@ -28,6 +28,10 @@ require_once(dirname(__FILE__)."/../libraries/https.inc.php");
 require_once(dirname(__FILE__)."/../libraries/database.inc.php");
 require_once(dirname(__FILE__)."/libraries/negotiation.inc.php");
 
+NegotiateContentType(array(CONTENT_TYPE_SUPPORTED_XML,
+                           CONTENT_TYPE_SUPPORTED_XHTML,
+                           CONTENT_TYPE_SUPPORTED_JSONCOLLECTION));
+
 $protocol = "https://";
 
 if (HTTPS_ENABLED !== true)
@@ -132,8 +136,9 @@ if ($_SERVER['REQUEST_METHOD'] === "GET")
              "  </body>\n".
              "</html>\n";
     }
-    else if (CONTENT_TYPE_REQUESTED === CONTENT_TYPE_SUPPORTED_JSON)
+    else if (CONTENT_TYPE_REQUESTED === CONTENT_TYPE_SUPPORTED_JSONCOLLECTION)
     {
+        /** @todo Is this even necessary when it comes to its current usage? */
         function jsonspecialchars($input)
         {
             return rtrim(ltrim(json_encode($input), "\""), "\"");
@@ -172,15 +177,15 @@ if ($_SERVER['REQUEST_METHOD'] === "GET")
                  "        \"href\": \"".$baseURL."/vote.php?id=".jsonspecialchars($vote['id'])."\",\n".
                  "        \"data\":\n".
                  "        [\n".
-                 "          { \"name\": \"id\", \"value\": ".json_encode($vote['id'])." },\n".
+                 "          { \"name\": \"id\", \"value\": ".$vote['id']." },\n".
                  "          { \"name\": \"name\", \"value\": ".json_encode($vote['name'])." },\n".
                  "          { \"name\": \"description\", \"value\": ".json_encode($vote['description'])." },\n".
                  "          { \"name\": \"datetime_created\", \"value\": ".json_encode($vote['datetime_created'])." }\n".
-                 "        ]\n".
-                 "      }\n";
+                 "        ]\n";
         }
 
-        echo "    ],\n".
+        echo "      }\n".
+             "    ],\n".
              "    \"template\":\n".
              "    {\n".
              "      \"data\":\n".
@@ -200,17 +205,84 @@ if ($_SERVER['REQUEST_METHOD'] === "GET")
 }
 else if ($_SERVER['REQUEST_METHOD'] === "POST")
 {
-    if (isset($_POST['given_name']) !== true)
+    if (isset($_POST['name']) !== true)
     {
         http_response_code(409);
-        echo "'given_name' is missing.";
+        echo "'name' is missing.";
         exit(-1);
     }
 
-    if (isset($_POST['family_name']) !== true)
+    if (isset($_POST['description']) !== true)
     {
         http_response_code(409);
-        echo "'family_name' is missing.";
+        echo "'description' is missing.";
+        exit(-1);
+    }
+
+    $handle = md5(uniqid(rand(), true));
+
+    $id = Database::Get()->Insert("INSERT INTO `".Database::Get()->GetPrefix()."votes` (`id`,\n".
+                                  "    `handle`,\n".
+                                  "    `type`,\n".
+                                  "    `name`,\n".
+                                  "    `description`,\n".
+                                  "    `datetime_created`)\n".
+                                  "VALUES (?, ?, ?, ?, ?, NOW())\n",
+                                  array(NULL, $handle, 1, $_POST['name'], $_POST['description']),
+                                  array(Database::TYPE_NULL, Database::TYPE_STRING, Database::TYPE_INT, Database::TYPE_STRING, Database::TYPE_STRING));
+
+    if ($id <= 0)
+    {
+        http_response_code(500);
+        exit(-1);
+    }
+
+    $link = $baseURL."/vote.php?id=".$id;
+
+    header("Location: ".$link, true, 201);
+
+    if (CONTENT_TYPE_REQUESTED === CONTENT_TYPE_SUPPORTED_XML)
+    {
+        echo "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n".
+             "<vote xmlns:xlink=\"http://www.w3.org/1999/xlink\" xlink:type=\"simple\" xlink:href=\"".$link."\">".$link."</vote>\n";
+    }
+    else if (CONTENT_TYPE_REQUESTED === CONTENT_TYPE_SUPPORTED_XHTML)
+    {
+        echo "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n".
+             "<!DOCTYPE html\n".
+             "    PUBLIC \"-//W3C//DTD XHTML 1.1//EN\"\n".
+             "    \"http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd\">\n".
+             "<html version=\"-//W3C//DTD XHTML 1.1//EN\" xmlns=\"http://www.w3.org/1999/xhtml\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xsi:schemaLocation=\"http://www.w3.org/1999/xhtml http://www.w3.org/MarkUp/SCHEMA/xhtml11.xsd\" xml:lang=\"en\" lang=\"en\">\n".
+             "  <head>\n".
+             "    <meta http-equiv=\"content-type\" content=\"".CONTENT_TYPE_SUPPORTED_XHTML."\"/>\n".
+             "    <title>Vote</title>\n".
+             "  </head>\n".
+             "  <body>\n".
+             "    <a href=\"".$link."\">".$link."</a>\n".
+             "  </body>\n".
+             "</html>\n";
+    }
+    else if (CONTENT_TYPE_REQUESTED === CONTENT_TYPE_SUPPORTED_JSONCOLLECTION)
+    {
+        echo "{\n".
+             "  \"collection\":\n".
+             "  {\n".
+             "    \"version\": \"1.0\",\n".
+             "    \"href\": \"".$baseURL."/votes.php\",\n".
+             "    \"items\":\n".
+             "    [\n".
+             "      {\n".
+             "        \"href\": \"".$link."\",\n".
+             "        \"data\":\n".
+             "        [\n".
+             "        ]\n".
+             "      }\n".
+             "    }\n".
+             "  }\n".
+             "}\n";
+    }
+    else
+    {
         exit(-1);
     }
 }

@@ -31,15 +31,11 @@ spl_autoload_register(function($class_name) {
 
 define("CONTENT_TYPE_SUPPORTED_XML", "application/xml; charset=UTF-8; q=1.0");
 define("CONTENT_TYPE_SUPPORTED_XHTML", "application/xhtml+xml; charset=UTF-8; q=0.35");
-define("CONTENT_TYPE_SUPPORTED_JSON", "application/vnd.collection+json; charset=UTF-8; q=0.1");
+define("CONTENT_TYPE_SUPPORTED_JSONCOLLECTION", "application/vnd.collection+json; charset=UTF-8; q=0.1");
+define("CONTENT_TYPE_SUPPORTED_JSON", "application/json; charset=UTF-8; q=0.1");
 
-// Just because PHP doesn't have local block scope...
-function NegotiateContentType()
+function NegotiateContentType($supportedContentTypes)
 {
-    $supportedContentTypes = array(CONTENT_TYPE_SUPPORTED_XML,
-                                   CONTENT_TYPE_SUPPORTED_XHTML,
-                                   CONTENT_TYPE_SUPPORTED_JSON);
-
     $acceptHeaderSuggestion = "";
 
     foreach ($supportedContentTypes as $acceptHeader)
@@ -54,42 +50,43 @@ function NegotiateContentType()
 
     define("CONTENT_TYPE_SUPPORTED_ACCEPTHEADERSUGGESTION", $acceptHeaderSuggestion);
 
-    $mediaType = null;
+    $requestedContentTypes = "";
 
     if (isset($_GET['format']) === true)
     {
         switch ($_GET['format'])
         {
         case "xml":
-            $mediaType = CONTENT_TYPE_SUPPORTED_XML;
+            $requestedContentTypes = CONTENT_TYPE_SUPPORTED_XML;
             break;
         case "xhtml":
-            $mediaType = CONTENT_TYPE_SUPPORTED_XHTML;
+            $requestedContentTypes = CONTENT_TYPE_SUPPORTED_XHTML;
             break;
         case "json":
-            $mediaType = CONTENT_TYPE_SUPPORTED_JSON;
+            $requestedContentTypes = CONTENT_TYPE_SUPPORTED_JSONCOLLECTION.",".CONTENT_TYPE_SUPPORTED_JSON;
             break;
         }
     }
-
-    if ($mediaType == null)
+    else
     {
-        $negotiator = new \Negotiation\Negotiator();
-        $requestedContentTypes = "";
-
         if (isset($_SERVER['HTTP_ACCEPT']) === true)
         {
             $requestedContentTypes = $_SERVER['HTTP_ACCEPT'];
         }
+    }
 
-        if (empty($requestedContentTypes) === false)
+    $mediaType = null;
+
+    if (empty($requestedContentTypes) === false)
+    {
+        $negotiator = new \Negotiation\Negotiator();
+
+        $mediaType = $negotiator->getBest($requestedContentTypes, $supportedContentTypes);
+
+        if ($mediaType != null)
         {
-            $mediaType = $negotiator->getBest($requestedContentTypes, $supportedContentTypes);
+            $mediaType = $mediaType->getValue();
 
-            if ($mediaType != null)
-            {
-                $mediaType = $mediaType->getValue();
-            }
         }
     }
 
@@ -103,8 +100,6 @@ function NegotiateContentType()
     define("CONTENT_TYPE_REQUESTED", $mediaType);
     header("Content-Type: ".CONTENT_TYPE_REQUESTED);
 }
-
-NegotiateContentType();
 
 
 
