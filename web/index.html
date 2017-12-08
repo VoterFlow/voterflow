@@ -21,161 +21,30 @@
       along with VoterFlow. If not, see <http://www.gnu.org/licenses/>.
       -->
       <title>VoterFlow</title>
-      <script src="angular.js"></script>
-      <script type="text/javascript">
-          function VotesListVM($http, $location) {
-            var that = this;
-
-            that.votes = new Array();
-
-            that.loadVotes = function() {
-              var expectedContentType = "application/xml";
-
-              var headers = {
-                "Accept": expectedContentType
-              };
-
-              var transformXmlResponse = function(response, headersGetter, status) {
-                var headers = headersGetter();
-                var returnedContentType = headers['content-type'];
-
-                if (returnedContentType.indexOf(expectedContentType) !== 0) {
-                  // Abort, if not 200?
-                  return response;
-                }
-
-                var result = new Array();
-
-                var parser = new DOMParser();
-                var dom = parser.parseFromString(response, expectedContentType);
-                // Check dom...
-                Array.prototype.slice.call(dom.getElementsByTagName("vote")).forEach(function(xmlVote) {
-                  var jsonVote = {};
-
-                  var id = xmlVote.getElementsByTagName("id");
-
-                  if (id != null) {
-                    id = id[0];
-                  }
-
-                  if (id != null) {
-                    jsonVote.id = parseInt(id.textContent);
-                  }
-
-                  var href = xmlVote.getElementsByTagName("xforms:submission");
-
-                  if (href != null) {
-                    href = href[0];
-                  }
-
-                  if (href != null) {
-                    href = href.getAttribute("action");
-                  }
-
-                  if (href != null) {
-                    jsonVote.href = href;
-                  }
-
-                  var name = xmlVote.getElementsByTagName("name");
-
-                  if (name != null) {
-                    name = name[0];
-                  }
-
-                  if (name != null) {
-                    jsonVote.name = name.textContent;
-                  }
-
-                  var description = xmlVote.getElementsByTagName("description");
-
-                  if (description != null) {
-                    description = description[0];
-                  }
-
-                  if (description != null) {
-                    jsonVote.description = description.textContent;
-                  }
-
-                  var datetimeCreated = xmlVote.getElementsByTagName("datetime-created");
-
-                  if (datetimeCreated != null) {
-                    datetimeCreated = datetimeCreated[0];
-                  }
-
-                  if (datetimeCreated != null) {
-                    jsonVote.datetimeCreated = datetimeCreated.textContent;
-                  }
-
-                  result.push(jsonVote);
-                });
-
-                return result;
-              };
-
-              var options = {
-                params: undefined,
-                headers: headers,
-                transformResponse: transformXmlResponse
-              };
-
-              var baseURL = $location.absUrl();
-              baseURL = baseURL.substring(0, baseURL.lastIndexOf('/'));
-
-              $http.get(baseURL + '/api/votes.php', options)
-                .then(function successCallback(response) {
-                  // response.data isn't an array, if transformXmlResponse failed!
-                  that.votes = response.data;
-                }, function errorCallback(response) {
-                  alert("error");
-                  alert(response.status);
-                });
-            }
-
-            that.loadVote = function(id) {
-              alert(id);
-            }
-
-            that.sortColumn = "id";
-            that.sortColumnAscending = true;
-
-            that.setSortColumn = function(columnName) {
-              if (that.sortColumn == columnName) {
-                that.sortColumnAscending = !that.sortColumnAscending;
-              } else {
-                that.sortColumn = columnName;
-                that.sortColumnAscending = true;
-              }
-            }
-          }
-
-          var app = angular.module("votes", []);
-
-          app.controller("VotesListCtrl", function($scope, $http, $location) {
-              $scope.vm = new VotesListVM($http, $location);
-              $scope.vm.loadVotes();
-          });
-        </script>
     </head>
     <body>
-      <div ng:app="votes" ng:controller="VotesListCtrl">
+      <div>
+        <h1>VoterFlow</h1>
         <div>
-          <a href="member_index.php">Member Area</a>
-          <a href="index_json.html">JSON</a>
+          <p>
+            <a href="https://www.gnu.org/philosophy/who-does-that-server-really-serve.html">Self-hostable</a> voting/polling software under a <a href="https://www.gnu.org/licenses/agpl-3.0.html">free/libre license</a> developed on <a href="https://github.com/VoterFlow/voterflow">GitHub</a>.
+          </p>
+          <div>
+            <h2>API</h2>
+            <p>
+              Here’s the generic <a href="./api/votes.php">ReST-API</a> to explore. You can add the parameter argument <code>format=xml</code> or <code>format=xhtml</code> to explicitly request a different hypermedia format, while <code>format=json</code> is just there for demonstration purposes and probably won’t get implemented to the full extend due to the lack of semantics.
+            </p>
+          </div>
+          <div>
+            <h2>Clients</h2>
+            <ul>
+              <li><a href="./clients/voterflow/index.html">VoterFlow Default</a></li>
+            </ul>
+          </div>
+          <p>
+            For administration, see the <a href="member_index.php">member area</a>. In case the software isn’t installed yet, click <a href="./install/install.php">here</a>.
+          </p>
         </div>
-        <table ng:show="vm.votes.length > 0" class="table table-striped">
-          <tr>
-            <th><a ng:click="vm.setSortColumn('id');">Id</a></th>
-            <th><a ng:click="vm.setSortColumn('name');">Name</a></th>
-            <th><a ng:click="vm.setSortColumn('description');">Description</a></th>
-            <th><a ng:click="vm.setSortColumn('datetimeCreated');">Creation</a></th>
-          </tr>
-          <tr ng:repeat="vote in vm.votes | orderBy:vm.sortColumn:!vm.sortColumnAscending">
-            <td>{{vote.id}}</td>
-            <td><!-- a ng:attr-href="{{vote.href}}">{{vote.name}}</a--><a href="#" ng:click="vm.loadVote(vote.id);">{{vote.name}}</a></td>
-            <td>{{vote.description}}</td>
-            <td>{{vote.datetimeCreated | date: 'yyyy-MM-dd' }}</td>
-          </tr>
-        </table>
       </div>
     </body>
 </html>

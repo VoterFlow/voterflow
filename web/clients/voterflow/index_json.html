@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html version="-//W3C//DTD XHTML 1.1//EN" xmlns="http://www.w3.org/1999/xhtml" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.w3.org/MarkUp/SCHEMA/xhtml11.xsd" xmlns:ng="http://angularjs.org" xml:lang="en" lang="en">
+  <head>
+      <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+      <!--
+      Copyright (C) 2016-2017 Stephan Kreutzer
+
+      This file is part of VoterFlow.
+
+      VoterFlow is free software: you can redistribute it and/or modify
+      it under the terms of the GNU Affero General Public License version 3 or any later version,
+      as published by the Free Software Foundation.
+
+      VoterFlow is distributed in the hope that it will be useful,
+      but WITHOUT ANY WARRANTY; without even the implied warranty of
+      MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+      GNU Affero General Public License 3 for more details.
+
+      You should have received a copy of the GNU Affero General Public License 3
+      along with VoterFlow. If not, see <http://www.gnu.org/licenses/>.
+      -->
+      <title>VoterFlow</title>
+      <script src="angular.js"></script>
+      <script type="text/javascript">
+          function VotesListVM($http, $location) {
+            var that = this;
+
+            that.votes = new Array();
+
+            that.loadVotes = function() {
+              var baseURL = $location.absUrl();
+              baseURL = baseURL.substring(0, baseURL.lastIndexOf('/'));
+
+              $http.defaults.headers.common.Accept = 'application/vnd.collection+json,application/json';
+
+              $http({ method: 'GET', url: baseURL + '/../../api/votes.php' })
+                .then(function successCallback(response) {
+                  response.data.collection.items.forEach(function(item) {
+                    var vote = {};
+                    vote.href = item.href;
+
+                    item.data.forEach(function(data) {
+                      switch (data.name) {
+                      case "id":
+                        vote.id = parseInt(data.value);
+                        break;
+                      case "name":
+                        vote.name = data.value;
+                        break;
+                      case "description":
+                        vote.description = data.value;
+                        break;
+                      case "datetime_created":
+                        vote.datetimeCreated = data.value;
+                        break;
+                      }
+                    });
+
+                    that.votes.push(vote);
+                  });
+                }, function errorCallback(response) {
+                  alert("error");
+                  alert(response.status);
+                });
+            }
+
+            that.loadVote = function(id) {
+              alert(id);
+            }
+
+            that.sortColumn = "id";
+            that.sortColumnAscending = true;
+
+            that.setSortColumn = function(columnName) {
+              if (that.sortColumn == columnName) {
+                that.sortColumnAscending = !that.sortColumnAscending;
+              } else {
+                that.sortColumn = columnName;
+                that.sortColumnAscending = true;
+              }
+            }
+          }
+
+          var app = angular.module("votes", []);
+
+          app.controller("VotesListCtrl", function($scope, $http, $location) {
+              $scope.vm = new VotesListVM($http, $location);
+              $scope.vm.loadVotes();
+          });
+        </script>
+    </head>
+    <body>
+      <div ng:app="votes" ng:controller="VotesListCtrl">
+        <div>
+          <a href="../../member_index.php">Member Area</a>
+          <a href="index.html">XML</a>
+        </div>
+        <table ng:show="vm.votes.length > 0" class="table table-striped">
+          <tr>
+            <th><a ng:click="vm.setSortColumn('id');">Id</a></th>
+            <th><a ng:click="vm.setSortColumn('name');">Name</a></th>
+            <th><a ng:click="vm.setSortColumn('description');">Description</a></th>
+            <th><a ng:click="vm.setSortColumn('datetimeCreated');">Creation</a></th>
+          </tr>
+          <tr ng:repeat="vote in vm.votes | orderBy:vm.sortColumn:!vm.sortColumnAscending">
+            <td>{{vote.id}}</td>
+            <td><!-- a ng:attr-href="{{vote.href}}">{{vote.name}}</a--><a href="#" ng:click="vm.loadVote(vote.id);">{{vote.name}}</a></td>
+            <td>{{vote.description}}</td>
+            <td>{{vote.datetimeCreated | date: 'yyyy-MM-dd' }}</td>
+          </tr>
+        </table>
+      </div>
+    </body>
+</html>

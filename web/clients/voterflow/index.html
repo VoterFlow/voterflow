@@ -29,36 +29,102 @@
             that.votes = new Array();
 
             that.loadVotes = function() {
+              var expectedContentType = "application/xml";
+
+              var headers = {
+                "Accept": expectedContentType
+              };
+
+              var transformXmlResponse = function(response, headersGetter, status) {
+                var headers = headersGetter();
+                var returnedContentType = headers['content-type'];
+
+                if (returnedContentType.indexOf(expectedContentType) !== 0) {
+                  // Abort, if not 200?
+                  return response;
+                }
+
+                var result = new Array();
+
+                var parser = new DOMParser();
+                var dom = parser.parseFromString(response, expectedContentType);
+                // Check dom...
+                Array.prototype.slice.call(dom.getElementsByTagName("vote")).forEach(function(xmlVote) {
+                  var jsonVote = {};
+
+                  var id = xmlVote.getElementsByTagName("id");
+
+                  if (id != null) {
+                    id = id[0];
+                  }
+
+                  if (id != null) {
+                    jsonVote.id = parseInt(id.textContent);
+                  }
+
+                  var href = xmlVote.getElementsByTagName("xforms:submission");
+
+                  if (href != null) {
+                    href = href[0];
+                  }
+
+                  if (href != null) {
+                    href = href.getAttribute("action");
+                  }
+
+                  if (href != null) {
+                    jsonVote.href = href;
+                  }
+
+                  var name = xmlVote.getElementsByTagName("name");
+
+                  if (name != null) {
+                    name = name[0];
+                  }
+
+                  if (name != null) {
+                    jsonVote.name = name.textContent;
+                  }
+
+                  var description = xmlVote.getElementsByTagName("description");
+
+                  if (description != null) {
+                    description = description[0];
+                  }
+
+                  if (description != null) {
+                    jsonVote.description = description.textContent;
+                  }
+
+                  var datetimeCreated = xmlVote.getElementsByTagName("datetime-created");
+
+                  if (datetimeCreated != null) {
+                    datetimeCreated = datetimeCreated[0];
+                  }
+
+                  if (datetimeCreated != null) {
+                    jsonVote.datetimeCreated = datetimeCreated.textContent;
+                  }
+
+                  result.push(jsonVote);
+                });
+
+                return result;
+              };
+
+              var options = {
+                params: undefined,
+                headers: headers,
+                transformResponse: transformXmlResponse
+              };
+
               var baseURL = $location.absUrl();
               baseURL = baseURL.substring(0, baseURL.lastIndexOf('/'));
 
-              $http.defaults.headers.common.Accept = 'application/vnd.collection+json,application/json';
-
-              $http({ method: 'GET', url: baseURL + '/api/votes.php' })
+              $http.get(baseURL + '/../../api/votes.php', options)
                 .then(function successCallback(response) {
-                  response.data.collection.items.forEach(function(item) {
-                    var vote = {};
-                    vote.href = item.href;
-
-                    item.data.forEach(function(data) {
-                      switch (data.name) {
-                      case "id":
-                        vote.id = parseInt(data.value);
-                        break;
-                      case "name":
-                        vote.name = data.value;
-                        break;
-                      case "description":
-                        vote.description = data.value;
-                        break;
-                      case "datetime_created":
-                        vote.datetimeCreated = data.value;
-                        break;
-                      }
-                    });
-
-                    that.votes.push(vote);
-                  });
+                  // response.data isn't an array, if transformXmlResponse failed!
+                  that.votes = response.data;
                 }, function errorCallback(response) {
                   alert("error");
                   alert(response.status);
@@ -93,8 +159,8 @@
     <body>
       <div ng:app="votes" ng:controller="VotesListCtrl">
         <div>
-          <a href="member_index.php">Member Area</a>
-          <a href="index.html">XML</a>
+          <a href="../../member_index.php">Member Area</a>
+          <a href="index_json.html">JSON</a>
         </div>
         <table ng:show="vm.votes.length > 0" class="table table-striped">
           <tr>
