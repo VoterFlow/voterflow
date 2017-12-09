@@ -68,12 +68,12 @@ if ($_SERVER['REQUEST_METHOD'] === "GET")
             foreach ($votes as $vote)
             {
                 echo "  <vote>\n".
-                     "    <id>".htmlspecialchars($vote['id'], ENT_COMPAT | ENT_XML1, "UTF-8")."</id>\n".
+                     "    <handle>".htmlspecialchars($vote['handle'], ENT_COMPAT | ENT_XML1, "UTF-8")."</handle>\n".
                      "    <name>".htmlspecialchars($vote['name'], ENT_COMPAT | ENT_XML1, "UTF-8")."</name>\n".
                      "    <description>".htmlspecialchars($vote['description'], ENT_COMPAT | ENT_XML1, "UTF-8")."</description>\n".
                      "    <datetime-created>".htmlspecialchars($vote['datetime_created'], ENT_COMPAT | ENT_XML1, "UTF-8")."</datetime-created>\n".
                      "    <xforms:model>\n".
-                     "      <xforms:submission action=\"".$baseURL."/vote.php?id=".htmlspecialchars($vote['id'], ENT_COMPAT | ENT_XML1, "UTF-8")."\" method=\"get\"/>\n".
+                     "      <xforms:submission action=\"".$baseURL."/vote.php?handle=".htmlspecialchars($vote['handle'], ENT_COMPAT | ENT_XML1, "UTF-8")."\" method=\"get\"/>\n".
                      "    </xforms:model>\n".
                      "  </vote>\n";
             }
@@ -115,8 +115,8 @@ if ($_SERVER['REQUEST_METHOD'] === "GET")
             foreach ($votes as $vote)
             {
                 echo "      <li class=\"vote\">\n".
-                     "        <span class=\"id\">".htmlspecialchars($vote['id'], ENT_COMPAT | ENT_HTML401, "UTF-8")."</span>\n".
-                     "        <a href=\"".$baseURL."/vote.php?id=".htmlspecialchars($vote['id'], ENT_COMPAT | ENT_HTML401, "UTF-8")."\"><span class=\"name\">".htmlspecialchars($vote['name'], ENT_COMPAT | ENT_HTML401, "UTF-8")."</span></a>\n".
+                     "        <span class=\"handle\">".htmlspecialchars($vote['handle'], ENT_COMPAT | ENT_HTML401, "UTF-8")."</span>\n".
+                     "        <a href=\"".$baseURL."/vote.php?handle=".htmlspecialchars($vote['handle'], ENT_COMPAT | ENT_HTML401, "UTF-8")."\"><span class=\"name\">".htmlspecialchars($vote['name'], ENT_COMPAT | ENT_HTML401, "UTF-8")."</span></a>\n".
                      "        <span class=\"description\">".htmlspecialchars($vote['description'], ENT_COMPAT | ENT_HTML401, "UTF-8")."</span>\n".
                      "        <span class=\"datetime-created\">".htmlspecialchars($vote['datetime_created'], ENT_COMPAT | ENT_HTML401, "UTF-8")."</span>\n".
                      "      </li>\n";
@@ -174,10 +174,10 @@ if ($_SERVER['REQUEST_METHOD'] === "GET")
             }
 
             echo "      {\n".
-                 "        \"href\": \"".$baseURL."/vote.php?id=".jsonspecialchars($vote['id'])."\",\n".
+                 "        \"href\": \"".$baseURL."/vote.php?handle=".jsonspecialchars($vote['handle'])."\",\n".
                  "        \"data\":\n".
                  "        [\n".
-                 "          { \"name\": \"id\", \"value\": ".$vote['id']." },\n".
+                 "          { \"name\": \"handle\", \"value\": ".json_encode($vote['handle'])." },\n".
                  "          { \"name\": \"name\", \"value\": ".json_encode($vote['name'])." },\n".
                  "          { \"name\": \"description\", \"value\": ".json_encode($vote['description'])." },\n".
                  "          { \"name\": \"datetime_created\", \"value\": ".json_encode($vote['datetime_created'])." }\n".
@@ -237,7 +237,7 @@ else if ($_SERVER['REQUEST_METHOD'] === "POST")
         exit(-1);
     }
 
-    $link = $baseURL."/vote.php?id=".$id;
+    $link = $baseURL."/vote.php?handle=".$handle;
 
     header("Location: ".$link, true, 201);
 

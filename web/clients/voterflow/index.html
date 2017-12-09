@@ -52,14 +52,14 @@
                 Array.prototype.slice.call(dom.getElementsByTagName("vote")).forEach(function(xmlVote) {
                   var jsonVote = {};
 
-                  var id = xmlVote.getElementsByTagName("id");
+                  var handle = xmlVote.getElementsByTagName("handle");
 
-                  if (id != null) {
-                    id = id[0];
+                  if (handle != null) {
+                    handle = handle[0];
                   }
 
-                  if (id != null) {
-                    jsonVote.id = parseInt(id.textContent);
+                  if (handle != null) {
+                    jsonVote.handle = handle.textContent;
                   }
 
                   var href = xmlVote.getElementsByTagName("xforms:submission");
@@ -131,11 +131,11 @@
                 });
             }
 
-            that.loadVote = function(id) {
-              alert(id);
+            that.loadVote = function(handle) {
+              alert(handle);
             }
 
-            that.sortColumn = "id";
+            that.sortColumn = "name";
             that.sortColumnAscending = true;
 
             that.setSortColumn = function(columnName) {
@@ -164,14 +164,12 @@
         </div>
         <table ng:show="vm.votes.length > 0" class="table table-striped">
           <tr>
-            <th><a ng:click="vm.setSortColumn('id');">Id</a></th>
             <th><a ng:click="vm.setSortColumn('name');">Name</a></th>
             <th><a ng:click="vm.setSortColumn('description');">Description</a></th>
             <th><a ng:click="vm.setSortColumn('datetimeCreated');">Creation</a></th>
           </tr>
           <tr ng:repeat="vote in vm.votes | orderBy:vm.sortColumn:!vm.sortColumnAscending">
-            <td>{{vote.id}}</td>
-            <td><!-- a ng:attr-href="{{vote.href}}">{{vote.name}}</a--><a href="#" ng:click="vm.loadVote(vote.id);">{{vote.name}}</a></td>
+            <td><!-- a ng:attr-href="{{vote.href}}">{{vote.name}}</a--><a href="#" ng:click="vm.loadVote(vote.handle);">{{vote.name}}</a></td>
             <td>{{vote.description}}</td>
             <td>{{vote.datetimeCreated | date: 'yyyy-MM-dd' }}</td>
           </tr>

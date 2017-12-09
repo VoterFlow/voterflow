@@ -42,8 +42,8 @@
 
                     item.data.forEach(function(data) {
                       switch (data.name) {
-                      case "id":
-                        vote.id = parseInt(data.value);
+                      case "handle":
+                        vote.handle = data.value;
                         break;
                       case "name":
                         vote.name = data.value;
@@ -65,11 +65,11 @@
                 });
             }
 
-            that.loadVote = function(id) {
-              alert(id);
+            that.loadVote = function(handle) {
+              alert(handle);
             }
 
-            that.sortColumn = "id";
+            that.sortColumn = "name";
             that.sortColumnAscending = true;
 
             that.setSortColumn = function(columnName) {
@@ -98,14 +98,12 @@
         </div>
         <table ng:show="vm.votes.length > 0" class="table table-striped">
           <tr>
-            <th><a ng:click="vm.setSortColumn('id');">Id</a></th>
             <th><a ng:click="vm.setSortColumn('name');">Name</a></th>
             <th><a ng:click="vm.setSortColumn('description');">Description</a></th>
             <th><a ng:click="vm.setSortColumn('datetimeCreated');">Creation</a></th>
           </tr>
           <tr ng:repeat="vote in vm.votes | orderBy:vm.sortColumn:!vm.sortColumnAscending">
-            <td>{{vote.id}}</td>
-            <td><!-- a ng:attr-href="{{vote.href}}">{{vote.name}}</a--><a href="#" ng:click="vm.loadVote(vote.id);">{{vote.name}}</a></td>
+            <td><!-- a ng:attr-href="{{vote.href}}">{{vote.name}}</a--><a href="#" ng:click="vm.loadVote(vote.handle);">{{vote.name}}</a></td>
             <td>{{vote.description}}</td>
             <td>{{vote.datetimeCreated | date: 'yyyy-MM-dd' }}</td>
           </tr>

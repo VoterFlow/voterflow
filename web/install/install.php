@@ -473,6 +473,116 @@ else if ($step == 3)
                 }
             }
 
+            // Table voters
+
+            if ($success === true)
+            {
+                if ($dropExistingTables === true)
+                {
+                    if (Database::Get()->ExecuteUnsecure("DROP TABLE IF EXISTS `".Database::Get()->GetPrefix()."voters`") !== true)
+                    {
+                        $success = false;
+                    }
+                }
+            }
+
+            if ($success === true)
+            {
+                $sql = "CREATE TABLE ";
+
+                if ($keepExistingTables === true)
+                {
+                    $sql .= "IF NOT EXISTS ";
+                }
+
+                $sql .= "`".Database::Get()->GetPrefix()."voters` (".
+                        "  `id` int(11) NOT NULL AUTO_INCREMENT,".
+                        "  `handle` varchar(255) COLLATE utf8_bin NOT NULL,".
+                        "  `name` varchar(255) COLLATE utf8_bin NOT NULL,".
+                        "  `handle_vote` varchar(255) COLLATE utf8_bin NOT NULL,".
+                        "  PRIMARY KEY (`id`),".
+                        "  UNIQUE KEY (`handle`)".
+                        ") ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin";
+
+                if (Database::Get()->ExecuteUnsecure($sql) !== true)
+                {
+                    $success = false;
+                }
+            }
+
+            // Table vote_options
+
+            if ($success === true)
+            {
+                if ($dropExistingTables === true)
+                {
+                    if (Database::Get()->ExecuteUnsecure("DROP TABLE IF EXISTS `".Database::Get()->GetPrefix()."vote_options`") !== true)
+                    {
+                        $success = false;
+                    }
+                }
+            }
+
+            if ($success === true)
+            {
+                $sql = "CREATE TABLE ";
+
+                if ($keepExistingTables === true)
+                {
+                    $sql .= "IF NOT EXISTS ";
+                }
+
+                $sql .= "`".Database::Get()->GetPrefix()."vote_options` (".
+                        "  `id` int(11) NOT NULL AUTO_INCREMENT,".
+                        "  `position` int(11) NOT NULL,".
+                        "  `caption` varchar(255) COLLATE utf8_bin NOT NULL,".
+                        "  `handle_vote` varchar(255) NOT NULL,".
+                        "  PRIMARY KEY (`id`)".
+                        ") ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin";
+
+                if (Database::Get()->ExecuteUnsecure($sql) !== true)
+                {
+                    $success = false;
+                }
+            }
+
+
+            // Table casts
+
+            if ($success === true)
+            {
+                if ($dropExistingTables === true)
+                {
+                    if (Database::Get()->ExecuteUnsecure("DROP TABLE IF EXISTS `".Database::Get()->GetPrefix()."casts`") !== true)
+                    {
+                        $success = false;
+                    }
+                }
+            }
+
+            if ($success === true)
+            {
+                $sql = "CREATE TABLE ";
+
+                if ($keepExistingTables === true)
+                {
+                    $sql .= "IF NOT EXISTS ";
+                }
+
+                $sql .= "`".Database::Get()->GetPrefix()."casts` (".
+                        "  `id` int(11) NOT NULL AUTO_INCREMENT,".
+                        "  `handle_vote` varchar(255) COLLATE utf8_bin NOT NULL,".
+                        "  `handle_voter` varchar(255) COLLATE utf8_bin NOT NULL,".
+                        "  `id_vote_option` int(11) NOT NULL,".
+                        "  PRIMARY KEY (`id`)".
+                        ") ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin";
+
+                if (Database::Get()->ExecuteUnsecure($sql) !== true)
+                {
+                    $success = false;
+                }
+            }
+
             // Table logs
 
             if ($success === true)

@@ -48,17 +48,17 @@ if (Database::Get()->IsConnected() !== true)
 
 if ($_SERVER['REQUEST_METHOD'] === "GET")
 {
-    $id = 0;
+    $handle = null;
 
-    if (isset($_GET['id']) === true)
+    if (isset($_GET['handle']) === true)
     {
-        $id = (int)$_GET['id'];
+        $handle = $_GET['handle'];
     }
 
-    if ($id <= 0)
+    if ($handle === null)
     {
         http_response_code(409);
-        echo "'id' is missing or corrupt.";
+        echo "'handle' is missing or corrupt.";
         exit(-1);
     }
 
@@ -69,10 +69,10 @@ if ($_SERVER['REQUEST_METHOD'] === "GET")
                                    "    `description`,\n".
                                    "    `datetime_created`\n".
                                    "FROM `".Database::Get()->GetPrefix()."votes`\n".
-                                   "WHERE id=? AND\n".
+                                   "WHERE handle LIKE ? AND\n".
                                    "    type=1",
-                                   array($id),
-                                   array(Database::TYPE_INT));
+                                   array($handle),
+                                   array(Database::TYPE_STRING));
 
     if (is_array($vote) !== true)
     {
@@ -92,12 +92,13 @@ if ($_SERVER['REQUEST_METHOD'] === "GET")
     {
         echo "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n".
              "<vote>\n".
-             "  <id>".htmlspecialchars($vote['id'], ENT_COMPAT | ENT_XML1, "UTF-8")."</id>\n".
              "  <handle>".htmlspecialchars($vote['handle'], ENT_COMPAT | ENT_XML1, "UTF-8")."</handle>\n".
              "  <name>".htmlspecialchars($vote['name'], ENT_COMPAT | ENT_XML1, "UTF-8")."</name>\n".
              "  <description>".htmlspecialchars($vote['description'], ENT_COMPAT | ENT_XML1, "UTF-8")."</description>\n".
              "  <datetime-created>".htmlspecialchars($vote['datetime_created'], ENT_COMPAT | ENT_XML1, "UTF-8")."</datetime-created>\n".
-             "  <voters xmlns:xlink=\"http://www.w3.org/1999/xlink\" xlink:type=\"simple\" xlink:href=\"".$baseURL."/voters.php?id=".$id."\"/>\n".
+             "  <voters xmlns:xlink=\"http://www.w3.org/1999/xlink\" xlink:type=\"simple\" xlink:href=\"".$baseURL."/voters.php?handle=".htmlspecialchars($vote['handle'], ENT_COMPAT | ENT_XML1, "UTF-8")."\"/>\n".
+             "  <vote-options xmlns:xlink=\"http://www.w3.org/1999/xlink\" xlink:type=\"simple\" xlink:href=\"".$baseURL."/vote_options.php?handle=".htmlspecialchars($vote['handle'], ENT_COMPAT | ENT_XML1, "UTF-8")."\"/>\n".
+             "  <casts xmlns:xlink=\"http://www.w3.org/1999/xlink\" xlink:type=\"simple\" xlink:href=\"".$baseURL."/casts.php?handle=".htmlspecialchars($vote['handle'], ENT_COMPAT | ENT_XML1, "UTF-8")."\"/>\n".
              "</vote>\n";
     }
     else if (CONTENT_TYPE_REQUESTED === CONTENT_TYPE_SUPPORTED_XHTML)
@@ -113,11 +114,12 @@ if ($_SERVER['REQUEST_METHOD'] === "GET")
              "  </head>\n".
              "  <body>\n".
              "    <div class=\"vote\">\n".
-             "      <span class=\"id\">".htmlspecialchars($vote['id'], ENT_COMPAT | ENT_HTML401, "UTF-8")."</span>\n".
              "      <span class=\"name\">".htmlspecialchars($vote['name'], ENT_COMPAT | ENT_HTML401, "UTF-8")."</span>\n".
              "      <span class=\"description\">".htmlspecialchars($vote['description'], ENT_COMPAT | ENT_HTML401, "UTF-8")."</span>\n".
              "      <span class=\"datetime-created\">".htmlspecialchars($vote['datetime_created'], ENT_COMPAT | ENT_HTML401, "UTF-8")."</span>\n".
-             "      <a href=\"".$baseURL."/voters.php?id=".$id."\">Voters</a>\n".
+             "      <a href=\"".$baseURL."/voters.php?handle=".htmlspecialchars($vote['handle'], ENT_COMPAT | ENT_XML1, "UTF-8")."\">Voters</a>\n".
+             "      <a href=\"".$baseURL."/vote_options.php?handle=".htmlspecialchars($vote['handle'], ENT_COMPAT | ENT_XML1, "UTF-8")."\">Vote Options</a>\n".
+             "      <a href=\"".$baseURL."/casts.php?handle=".htmlspecialchars($vote['handle'], ENT_COMPAT | ENT_XML1, "UTF-8")."\">Casts</a>\n".
              "    </div>\n".
              "  </body>\n".
              "</html>\n";
@@ -125,11 +127,12 @@ if ($_SERVER['REQUEST_METHOD'] === "GET")
     else if (CONTENT_TYPE_REQUESTED === CONTENT_TYPE_SUPPORTED_JSON)
     {
         echo "{\n".
-             "  \"id\": ".$vote['id'].",\n".
              "  \"name\": ".json_encode($vote['name']).",\n".
              "  \"description\": ".json_encode($vote['description']).",\n".
              "  \"datetime_created\": ".json_encode($vote['datetime_created']).",\n".
-             "  \"voters\": ".json_encode($baseURL."/voters.php?id=".$vote['id'])."\n".
+             "  \"voters\": ".json_encode($baseURL."/voters.php?handle=".$vote['handle'])."\n".
+             "  \"vote_options\": ".json_encode($baseURL."/vote_options.php?handle=".$vote['handle'])."\n".
+             "  \"casts\": ".json_encode($baseURL."/casts.php?handle=".$vote['handle'])."\n".
              "}\n";
     }
     else
