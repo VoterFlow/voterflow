@@ -573,6 +573,7 @@ else if ($step == 3)
                         "  `id` int(11) NOT NULL AUTO_INCREMENT,".
                         "  `handle_vote` varchar(255) COLLATE utf8_bin NOT NULL,".
                         "  `handle_voter` varchar(255) COLLATE utf8_bin NOT NULL,".
+                        "  `datetime_submitted` datetime NOT NULL,".
                         "  `id_vote_option` int(11) NOT NULL,".
                         "  PRIMARY KEY (`id`)".
                         ") ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin";

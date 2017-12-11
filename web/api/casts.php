@@ -164,8 +164,9 @@ else if ($_SERVER['REQUEST_METHOD'] === "POST")
     $id = Database::Get()->Insert("INSERT INTO `".Database::Get()->GetPrefix()."casts` (`id`,\n".
                                   "    `handle_vote`,\n".
                                   "    `handle_voter`,\n".
-                                  "    `id_vote_option`)\n".
-                                  "VALUES (?, ?, ?, ?)\n",
+                                  "    `id_vote_option`,\n".
+                                  "    `datetime_submitted`)\n".
+                                  "VALUES (?, ?, ?, ?, NOW())\n",
                                   array(NULL, $handle, $_POST['handle_voter'], (int)$_POST['id_vote_option']),
                                   array(Database::TYPE_NULL, Database::TYPE_STRING, Database::TYPE_STRING, Database::TYPE_INT));
 
