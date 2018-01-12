@@ -1,5 +1,5 @@
 <?php
-/* Copyright (C) 2017 Stephan Kreutzer
+/* Copyright (C) 2018 Stephan Kreutzer
  *
  * This file is part of VoterFlow.
  *
@@ -18,9 +18,8 @@
 
 
 
-define("LANG_PAGETITLE", "Termin");
-define("LANG_HEADER", "Termin");
-define("LANG_THANKS", "Danke!");
+define("LANG_PAGETITLE", "Result");
+define("LANG_HEADER", "Result");
 
 
 

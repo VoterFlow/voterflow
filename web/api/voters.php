@@ -80,12 +80,11 @@ if ($_SERVER['REQUEST_METHOD'] === "GET")
             foreach ($voters as $voter)
             {
                 echo "  <voter>\n".
-                     "    <voter>\n".
-                     "      <xforms:model>\n".
-                     "        <xforms:submission action=\"".$baseURL."/voter.php?handle=".htmlspecialchars($voter['handle'], ENT_COMPAT | ENT_XML1, "UTF-8")."\" method=\"get\"/>\n".
-                     "      </xforms:model>\n".
-                     "    </voter>\n".
+                     "    <xforms:model>\n".
+                     "      <xforms:submission action=\"".$baseURL."/voter.php?handle=".htmlspecialchars($voter['handle'], ENT_COMPAT | ENT_XML1, "UTF-8")."\" method=\"get\"/>\n".
+                     "    </xforms:model>\n".
                      "    <name>".htmlspecialchars($voter['name'], ENT_COMPAT | ENT_XML1, "UTF-8")."</name>\n".
+                     "    <handle>".htmlspecialchars($voter['handle'], ENT_COMPAT | ENT_XML1, "UTF-8")."</handle>\n".
                      "    <vote>\n".
                      "      <xforms:model>\n".
                      "        <xforms:submission action=\"".$baseURL."/vote.php?handle=".htmlspecialchars($handle, ENT_COMPAT | ENT_XML1, "UTF-8")."\" method=\"get\"/>\n".
@@ -130,6 +129,7 @@ if ($_SERVER['REQUEST_METHOD'] === "GET")
                 echo "      <li class=\"voter\">\n".
                      "        <a href=\"".$baseURL."/voter.php?handle=".htmlspecialchars($voter['handle'], ENT_COMPAT | ENT_HTML401, "UTF-8")."\"><span class=\"handle\">Voter</span></a>\n".
                      "        <span class=\"name\">".htmlspecialchars($voter['name'], ENT_COMPAT | ENT_HTML401, "UTF-8")."</span>\n".
+                     "        <span class=\"handle\">".htmlspecialchars($voter['handle'], ENT_COMPAT | ENT_HTML401, "UTF-8")."</span>\n".
                      "        <a href=\"".$baseURL."/vote.php?handle=".htmlspecialchars($handle, ENT_COMPAT | ENT_HTML401, "UTF-8")."\"><span class=\"handle-vote\">Vote</span></a>\n".
                      "      </li>\n";
             }
@@ -162,10 +162,7 @@ else if ($_SERVER['REQUEST_METHOD'] === "POST")
     }
 
     $handleNew = md5(uniqid(rand(), true));
-/*echo "INSERT INTO `".Database::Get()->GetPrefix()."voters` (`id`,\n".
-                                  "    `handle`,\n".
-                                  "    `name`,\n".
-                                  "    `handle_vote`) VALUES (NULL, '".$handleNew."', '".$_POST['name']."', '".$handle."')";*/
+
     $id = Database::Get()->Insert("INSERT INTO `".Database::Get()->GetPrefix()."voters` (`id`,\n".
                                   "    `handle`,\n".
                                   "    `name`,\n".

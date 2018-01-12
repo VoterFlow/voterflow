@@ -1,4 +1,4 @@
-/* Copyright (C) 2012-2017 Stephan Kreutzer
+/* Copyright (C) 2012-2018 Stephan Kreutzer
  *
  * This file is part of VoterFlow.
  *
@@ -53,7 +53,7 @@ function requestVote(handle, handle_voter)
     }
 
     {
-        xmlhttp.open('GET', basePath + "/../../api/vote.php?handle=" + handle, true);
+        xmlhttp.open('GET', basePath + "/../voterflow/api/vote.php?handle=" + handle, true);
         xmlhttp.setRequestHeader('Accept',
                                  'application/xml');
         xmlhttp.onreadystatechange = function() { resultVote(handle, handle_voter); };
@@ -103,7 +103,7 @@ function resultVote(handle, handle_voter)
             return;
         }
 
-        xmlhttp.open('GET', basePath + "/../../api/vote_options.php?handle=" + handle, true);
+        xmlhttp.open('GET', basePath + "/../voterflow/api/vote_options.php?handle=" + handle, true);
         xmlhttp.setRequestHeader('Accept',
                                  'application/xml');
         xmlhttp.onreadystatechange = function() { resultVoteOptions(handle, handle_voter); };
@@ -142,7 +142,7 @@ function resultVoteOptions(handle, handle_voter)
 
         for (var i = 0; i < options.length; i++)
         {
-            optionsElement.innerHTML += "<div class=\"option\"><a href=\"#\" onclick=\"requestCast('" + handle + "', '" + handle_voter + "', " + options.item(i).getElementsByTagName('id').item(0).textContent + ");\">" + options.item(i).getElementsByTagName('caption').item(0).textContent + "</a></div>";
+            optionsElement.innerHTML += "<div class=\"option\"><button type=\"button\" class=\"btn btn-info\" onclick=\"requestCast('" + handle + "', '" + handle_voter + "', " + options.item(i).getElementsByTagName('id').item(0).textContent + ");\">" + options.item(i).getElementsByTagName('caption').item(0).textContent + "</button></div>";
         }
     }
 }
@@ -155,7 +155,7 @@ function requestCast(handle, handle_voter, option)
     }
 
     {
-        xmlhttp.open('POST', basePath + "/../../api/casts.php?handle=" + handle, true);
+        xmlhttp.open('POST', basePath + "/../voterflow/api/casts.php?handle=" + handle, true);
         xmlhttp.setRequestHeader('Content-Type',
                                  'application/x-www-form-urlencoded');
         xmlhttp.setRequestHeader('Accept',

@@ -64,9 +64,11 @@ if ($_SERVER['REQUEST_METHOD'] === "GET")
 {
     $casts = Database::Get()->Query("SELECT `id`,\n".
                                     "    `handle_voter`,\n".
+                                    "    `datetime_submitted`,\n".
                                     "    `id_vote_option`\n".
-                                    "FROM `".Database::Get()->GetPrefix()."votes`\n".
-                                    "WHERE `handle_vote` LIKE ?",
+                                    "FROM `".Database::Get()->GetPrefix()."casts`\n".
+                                    "WHERE `handle_vote` LIKE ?\n".
+                                    "ORDER BY `handle_voter`, `datetime_submitted`\n",
                                     array($handle),
                                     array(Database::TYPE_STRING));
 
@@ -81,6 +83,7 @@ if ($_SERVER['REQUEST_METHOD'] === "GET")
             {
                 echo "  <cast>\n".
                      "    <handle-voter>".htmlspecialchars($cast['handle_voter'], ENT_COMPAT | ENT_XML1, "UTF-8")."</handle-voter>\n".
+                     "    <datetime-submitted>".htmlspecialchars($cast['datetime_submitted'], ENT_COMPAT | ENT_XML1, "UTF-8")."</datetime-submitted>\n".
                      "    <id-vote-option>".htmlspecialchars($cast['id_vote_option'], ENT_COMPAT | ENT_XML1, "UTF-8")."</id-vote-option>\n".
                      "  </cast>\n";
             }
@@ -122,6 +125,7 @@ if ($_SERVER['REQUEST_METHOD'] === "GET")
             {
                 echo "      <li class=\"cast\">\n".
                      "        <span class=\"handle-voter\">".htmlspecialchars($cast['handle_voter'], ENT_COMPAT | ENT_HTML401, "UTF-8")."</span>\n".
+                     "        <span class=\"datetime-submitted\">".htmlspecialchars($cast['datetime_submitted'], ENT_COMPAT | ENT_HTML401, "UTF-8")."</span>\n".
                      "        <span class=\"id-vote-option\">".htmlspecialchars($cast['id_vote_option'], ENT_COMPAT | ENT_HTML401, "UTF-8")."</span>\n".
                      "      </li>\n";
             }
@@ -164,9 +168,9 @@ else if ($_SERVER['REQUEST_METHOD'] === "POST")
     $id = Database::Get()->Insert("INSERT INTO `".Database::Get()->GetPrefix()."casts` (`id`,\n".
                                   "    `handle_vote`,\n".
                                   "    `handle_voter`,\n".
-                                  "    `id_vote_option`,\n".
-                                  "    `datetime_submitted`)\n".
-                                  "VALUES (?, ?, ?, ?, NOW())\n",
+                                  "    `datetime_submitted`,\n".
+                                  "    `id_vote_option`)\n".
+                                  "VALUES (?, ?, ?, NOW(), ?)\n",
                                   array(NULL, $handle, $_POST['handle_voter'], (int)$_POST['id_vote_option']),
                                   array(Database::TYPE_NULL, Database::TYPE_STRING, Database::TYPE_STRING, Database::TYPE_INT));
 

@@ -18,8 +18,8 @@
 
 
 
-define("LANG_PAGETITLE", "Vote");
-define("LANG_HEADER", "Vote");
+define("LANG_PAGETITLE", "Appointment");
+define("LANG_HEADER", "Appointment");
 define("LANG_THANKS", "Thanks!");
 
 

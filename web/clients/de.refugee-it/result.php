@@ -1,5 +1,5 @@
 <?php
-/* Copyright (C) 2016-2017 Stephan Kreutzer
+/* Copyright (C) 2016-2018 Stephan Kreutzer
  *
  * This file is part of VoterFlow.
  *
@@ -17,7 +17,6 @@
  */
 
 $handle = null;
-$handle_voter = null;
 
 if (isset($_GET['handle']) === true)
 {
@@ -34,23 +33,8 @@ if ($handle === null)
     exit(-1);
 }
 
-if (isset($_GET['handle_voter']) === true)
-{
-    if (ctype_alnum($_GET['handle_voter']) === true)
-    {
-        $handle_voter = $_GET['handle_voter'];
-    }
-}
-
-if ($handle_voter === null)
-{
-    http_response_code(409);
-    echo "'handle_voter' is missing or corrupt.";
-    exit(-1);
-}
-
 require_once(dirname(__FILE__)."/../libraries/languagelib.inc.php");
-require_once(getLanguageFile("index"));
+require_once(getLanguageFile("result"));
 
 $direction = getCurrentLanguageDirection();
 
@@ -62,12 +46,11 @@ echo "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n".
      "    <head>\n".
      "        <meta http-equiv=\"content-type\" content=\"application/xhtml+xml; charset=UTF-8\"/>\n".
      "        <title>".LANG_PAGETITLE."</title>\n".
-     "        <link rel=\"stylesheet\" type=\"text/css\" href=\"bootstrap/css/bootstrap.min.css\"/>\n".
      "        <link rel=\"stylesheet\" type=\"text/css\" href=\"../mainstyle.css\"/>\n".
      "        <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\"/>\n".
-     "        <script type=\"text/javascript\" src=\"./client/request-vote.js\"></script>\n".
+     "        <script type=\"text/javascript\" src=\"./client/request-casts.js\"></script>\n".
      "    </head>\n".
-     "    <body onload=\"requestVote('".htmlspecialchars($handle, ENT_COMPAT | ENT_HTML401, "UTF-8")."', '".htmlspecialchars($handle_voter, ENT_COMPAT | ENT_HTML401, "UTF-8")."');\">\n";
+     "    <body onload=\"loadData('".htmlspecialchars($handle, ENT_COMPAT | ENT_HTML401, "UTF-8")."');\">\n";
 
 if ($direction === LanguageDefinition::DirectionRTL)
 {
@@ -78,16 +61,10 @@ else
     echo "        <div id=\"content\">\n";
 }
 
-require_once("../language_selector.inc.php");
-echo getHTMLLanguageSelector("index.php?handle=".htmlspecialchars($handle, ENT_COMPAT | ENT_HTML401, "UTF-8")."&amp;handle_voter=".htmlspecialchars($handle_voter, ENT_COMPAT | ENT_HTML401, "UTF-8"));
-
 echo "<div>\n".
      "  <h1>".LANG_HEADER."</h1>\n".
      "  <div>\n".
-     "    <h2 id=\"vote-name\"></h2>\n".
-     "    <p id=\"vote-description\"></p>\n".
-     "    <div id=\"vote-options\"></div>\n".
-     "    <div id=\"confirmed\" style=\"visibility: hidden;\">".LANG_THANKS."</div>\n".
+     "    <div id=\"vote-casts\"></div>\n".
      "  </div>\n".
      "</div>\n";
 
